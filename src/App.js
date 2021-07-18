@@ -1,80 +1,66 @@
-import firebase from "./Firebase/Firebase";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Notification from "./Pages/Notification/Notification";
+import { AuthProvider } from "./Contexts/AuthContext";
+import PrivateRoute from "./PrivateRoute";
+import Login from "./Pages/Login/Login";
+import Dashboard from "./Pages/Dashboard/Dashboard";
+import Users from "./Pages/Users/Users";
+import "primereact/resources/themes/rhea/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
+import PrimeReact from "primereact/api";
+import "primeflex/primeflex.css";
+import UserDataContext from "./Contexts/UserDataContext";
 import { useState } from "react";
+import Profile from "./Pages/Profile/Profile";
+import System from "./Pages/System/System";
+import AppDataContext from "./Contexts/AppDataContext";
+import UserActiveDataContext from "./Contexts/UserActiveDataContext";
+import React from "react";
+
+PrimeReact.ripple = true;
 
 function App() {
-  const [notificationTitle, setNotificationTitle] = useState("");
-  const [notificationMessage, setNotificationMessage] = useState("");
-
-  let tokenArray = [];
-
-  const isActive = (month) => {
-    const currentMonth = new Date().getMonth();
-    const userMonth = month;
-    if (currentMonth === userMonth) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  const initNotification = async () => {
-    const userDocRef = await firebase.firestore().collection("users");
-    userDocRef.get().then((querySnapshot) => {
-      const tempDoc = querySnapshot.docs.map((doc) => {
-        return { notificationToken: doc.notificationToken, ...doc.data() };
-      });
-      tempDoc.map((token) => {
-        if (token.notificationToken && isActive(token.lastUsed)) {
-          tokenArray.push({
-            to: token.notificationToken,
-            title: notificationTitle,
-            body: notificationMessage,
-          });
-        }
-        return true;
-      });
-      sendNotification();
-    });
-    return true;
-  };
-
-  const makeNotification = async () => {
-    const getUser = await initNotification();
-  };
-
-  const sendNotification = async () => {
-    await fetch("https://exp.host/--/api/v2/push/send", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Accept-encoding": "gzip, deflate",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(tokenArray),
-    })
-      .then((e) => e.ok && console.log("selesai"))
-      .catch((e) => console.log(e));
-  };
+  const [userData, setUserData] = useState(null);
+  const [userActiveData, setUserActiveData] = useState(null);
+  const [appData, setAppData] = useState(null);
 
   return (
-    <div className="App">
-      <input
-        type="text"
-        name="judul"
-        id="judul"
-        onChange={(e) => setNotificationTitle(e.target.value)}
-      />{" "}
-      <br />
-      <input
-        type="text"
-        name="pesan"
-        id="pesan"
-        onChange={(e) => setNotificationMessage(e.target.value)}
-      />{" "}
-      <br />
-      <button onClick={makeNotification}>add data notif</button>
-      <button onClick={sendNotification}>kirim notif</button>
-    </div>
+    <Router>
+      <AppDataContext.Provider value={[appData, setAppData]}>
+        <UserDataContext.Provider value={[userData, setUserData]}>
+          <UserActiveDataContext.Provider
+            value={[userActiveData, setUserActiveData]}
+          >
+            <AuthProvider>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/dashboard/notification"
+                  component={Notification}
+                />
+                <PrivateRoute exact path="/dashboard" component={Dashboard} />
+                <PrivateRoute exact path="/dashboard/user" component={Users} />
+                <PrivateRoute
+                  exact
+                  path="/dashboard/profile"
+                  component={Profile}
+                />
+                <PrivateRoute
+                  exact
+                  path="/dashboard/system"
+                  component={System}
+                />
+                <Route path="/login" exact component={Login} />
+                <Route path="/" exact>
+                  <h1>Hai</h1>
+                </Route>
+              </Switch>
+            </AuthProvider>
+          </UserActiveDataContext.Provider>
+        </UserDataContext.Provider>
+      </AppDataContext.Provider>
+    </Router>
   );
 }
 
