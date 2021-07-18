@@ -52,7 +52,7 @@ const System = () => {
         .collection("applications")
         .doc("banners")
         .set({ banner: bannerRef.current.value.split(",") }, { merge: true })
-        .then(() => {
+        .then((e) => {
           setIsSend(false);
           showSuccess();
         });

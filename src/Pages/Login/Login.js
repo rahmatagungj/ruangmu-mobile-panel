@@ -48,7 +48,7 @@ const Login = () => {
                 <InputText type="text" name="email" id="email" ref={emailRef} />
               </div>
               <div className="p-field">
-                <label htmlFor="password">Lastname</label>
+                <label htmlFor="password">Kata Sandi</label>
                 <InputText
                   type="text"
                   name="password"

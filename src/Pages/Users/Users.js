@@ -8,9 +8,8 @@ import { Panel } from "primereact/panel";
 import UserDataContext from "../../Contexts/UserDataContext";
 
 const Users = () => {
-  const [userData] = useContext(UserDataContext);
+  const [userData, setUserData] = useContext(UserDataContext);
   const [isLoaded, setIsLoaded] = useState(false);
-
   const [nodes, setNodes] = useState(userData);
 
   useEffect(() => {
@@ -39,6 +38,7 @@ const Users = () => {
     setNodes(newFilteredNodes);
   };
   const handleDeleteToken = async (token) => {
+    updateNode(token);
     const docRef = firebase.firestore().collection("users");
     const doc = await docRef.doc(token).get();
     if (doc.exists) {
@@ -47,7 +47,7 @@ const Users = () => {
     }
   };
 
-  const actionTemplate = (node) => {
+  const actionTemplate = (node, column) => {
     return (
       <div>
         <Button
@@ -65,7 +65,7 @@ const Users = () => {
       <MenuBar />
       <Panel header="Data Pengguna" className="p-m-3">
         {isLoaded ? (
-          <TreeTable value={nodes} paginator lazy scrollable rows={100}>
+          <TreeTable value={nodes} paginator scrollable rows={100}>
             <Column field="token" header="Token" expander></Column>
             <Column
               field="lastUsed"

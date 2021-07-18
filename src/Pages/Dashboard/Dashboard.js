@@ -10,7 +10,7 @@ import UserActiveDataContext from "../../Contexts/UserActiveDataContext";
 const Dashboard = () => {
   const [userData, setUserData] = useContext(UserDataContext);
   const [userActiveData, setUserActiveData] = useContext(UserActiveDataContext);
-  const [setAppData] = useContext(AppDataContext);
+  const [appData, setAppData] = useContext(AppDataContext);
   const [isLoaded, setIsLoaded] = useState(false);
 
   let userArray = [];
