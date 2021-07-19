@@ -92,20 +92,19 @@ const Notification = () => {
     }
   };
 
-  const updateNode = (id) => {
-    const filteredNodes = nodes.filter((node) => node.key !== id);
+  const updateNode = (key) => {
+    const filteredNodes = nodes.filter((node) => node.data.key !== key);
     const newFilteredNodes = [...filteredNodes];
     setNodes(newFilteredNodes);
     console.log(newFilteredNodes);
   };
 
-  const handleDeleteNotif = async (id) => {
+  const handleDeleteNotif = async (key) => {
     const docRef = firebase.firestore().collection("notifications");
-    const doc = await docRef.doc(id.toString()).get();
+    const doc = await docRef.doc(key.toString()).get();
     if (doc.exists) {
-      console.log("dihapus", id.toString());
-      docRef.doc(id.toString()).delete();
-      updateNode(id - 1);
+      docRef.doc(key.toString()).delete();
+      updateNode(key);
     }
   };
 
@@ -130,7 +129,7 @@ const Notification = () => {
         setIsSend(true);
         return tokenArray;
       });
-      handleAddNotif(notificationData.length + 1);
+      handleAddNotif(notificationKey);
       sendNotification();
     }
   };
@@ -154,12 +153,10 @@ const Notification = () => {
           body: JSON.stringify(splitedData[i]),
         }
       );
-      console.log(response);
       if (response.status === 200) {
         showSuccess(splitedData[i].length);
       } else {
         showFailed(splitedData[i].length);
-        console.log("gagal", response);
       }
     }
     tokenArray = [];
@@ -216,7 +213,7 @@ const Notification = () => {
           icon="pi pi-trash"
           className="p-button-warning"
           style={{ marginRight: ".5em" }}
-          onClick={() => handleDeleteNotif(column.node.key + 1)}
+          onClick={() => handleDeleteNotif(node.data.key)}
         />
       </div>
     );
