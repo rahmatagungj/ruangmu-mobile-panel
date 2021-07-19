@@ -37,8 +37,8 @@ const Users = () => {
     const newFilteredNodes = [...filteredNodes];
     setNodes(newFilteredNodes);
   };
+
   const handleDeleteToken = async (token) => {
-    updateNode(token);
     const docRef = firebase.firestore().collection("users");
     const doc = await docRef.doc(token).get();
     if (doc.exists) {
@@ -60,6 +60,7 @@ const Users = () => {
       </div>
     );
   };
+
   return (
     <div>
       <MenuBar />

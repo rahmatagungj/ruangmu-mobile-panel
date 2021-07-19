@@ -17,6 +17,7 @@ const System = () => {
   const bannerRef = useRef();
   const toast = useRef(null);
   const [isSend, setIsSend] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (appData) {
@@ -101,6 +102,7 @@ const System = () => {
         });
     }
   };
+
   const RenderEditListBanner = () => {
     return (
       <div className="p-fluid p-formgrid p-grid">
@@ -165,16 +167,32 @@ const System = () => {
       </div>
     );
   };
+
+  useEffect(() => {
+    if (appData && banners) {
+      setIsLoaded(true);
+    }
+    return () => {
+      setIsLoaded(false);
+    };
+  }, [appData, banners]);
+
   return (
     <div>
       <MenuBar />
       <Panel header="Banner" className="p-m-3">
-        <RenderListBanner /> <br />
-        <RenderEditListBanner />
-        <Button onClick={updateBanner} label="Perbarui" disabled={isSend} />
+        {isLoaded ? (
+          <>
+            <RenderListBanner /> <br />
+            <RenderEditListBanner />
+            <Button onClick={updateBanner} label="Perbarui" disabled={isSend} />
+          </>
+        ) : (
+          <h3>Data tidak ada.</h3>
+        )}
       </Panel>
       <Panel header="Lainnya" className="p-m-3">
-        <RenderGeneral />
+        {isLoaded ? <RenderGeneral /> : <h3>Data tidak ada.</h3>}
       </Panel>
     </div>
   );

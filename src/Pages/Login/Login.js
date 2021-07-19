@@ -39,9 +39,9 @@ const Login = () => {
         <Card
           title="Masuk"
           subTitle={error ? error : "Harap masuk untuk melanjutkan"}
-          className="animation-panel vertical-center"
+          className="animation-panel vertical-center shadowed"
         >
-          <div className="p-fluid">
+          <div className="p-fluid ">
             <form onSubmit={handleSubmit}>
               <div className="p-field">
                 <label htmlFor="email">Alamat Surel</label>
@@ -57,7 +57,11 @@ const Login = () => {
                 />
               </div>
               <div className="p-field">
-                <Button label="Masuk" disabled={loading} />
+                <Button
+                  label="Masuk"
+                  disabled={loading}
+                  className="bg-dark-blue"
+                />
               </div>
             </form>
           </div>

@@ -3,6 +3,7 @@ import { Menubar } from "primereact/menubar";
 import { Button } from "primereact/button";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
+import "./MenuBar.css";
 
 const MenuBar = () => {
   const [error, setError] = useState("");
@@ -57,12 +58,14 @@ const MenuBar = () => {
   return (
     <div>
       <Menubar
+        className="bg-dark-blue no-border color-white"
         model={items}
         outsideClick={() => {}}
         start={Home}
         end={
           !error && (
             <Button
+              className="bg-red no-border"
               label="Keluar"
               icon="pi pi-power-off"
               onClick={handleLogout}

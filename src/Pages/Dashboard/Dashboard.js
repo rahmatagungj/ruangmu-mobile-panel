@@ -6,12 +6,15 @@ import { Card } from "primereact/card";
 import { ProgressSpinner } from "primereact/progressspinner";
 import AppDataContext from "../../Contexts/AppDataContext";
 import UserActiveDataContext from "../../Contexts/UserActiveDataContext";
+import NotificationContext from "../../Contexts/NotificationContext";
 
 const Dashboard = () => {
   const [userData, setUserData] = useContext(UserDataContext);
   const [userActiveData, setUserActiveData] = useContext(UserActiveDataContext);
   const [appData, setAppData] = useContext(AppDataContext);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [notificationData, setNotificationData] =
+    useContext(NotificationContext);
 
   let userArray = [];
   let userActiveArray = [];
@@ -56,9 +59,20 @@ const Dashboard = () => {
     getAllUser();
   };
 
+  const getAllNotificationApp = async () => {
+    const userDocRef = await firebase.firestore().collection("notifications");
+    userDocRef.get().then((querySnapshot) => {
+      const tempDoc = querySnapshot.docs.map((doc) => {
+        return { ...doc.data() };
+      });
+      setNotificationData(tempDoc);
+    });
+  };
+
   useEffect(() => {
-    if (!userData) {
+    if (!userData && !notificationData) {
       getAllAppData();
+      getAllNotificationApp();
       setIsLoaded(false);
     } else {
       setIsLoaded(true);
