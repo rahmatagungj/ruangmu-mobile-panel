@@ -17,7 +17,7 @@ const Notification = () => {
   const [notificationMessage, setNotificationMessage] = useState(null);
   const [notificationShortMessage, setNotificationShortMessage] =
     useState(null);
-  const [notificationTime, setNotificationTime] = useState(null);
+  const [notificationLink, setNotificationLink] = useState(null);
   const [notificationImage, setNotificationImage] = useState(null);
   const [notificationKey, setNotificationKey] = useState(null);
   const [newNodesData, setNewNodesData] = useState(null);
@@ -76,7 +76,7 @@ const Notification = () => {
         content: notificationMessage,
         image: notificationImage,
         name: notificationTitle,
-        time: notificationTime,
+        link: notificationLink,
         key: notificationKey,
       });
       nodes.push({
@@ -84,7 +84,7 @@ const Notification = () => {
         data: {
           key: notificationKey,
           name: notificationTitle,
-          time: notificationTime,
+          link: notificationLink,
           image: notificationImage,
           content: notificationMessage,
         },
@@ -195,7 +195,7 @@ const Notification = () => {
           data: {
             key: user.key,
             name: user.name,
-            time: user.time,
+            link: user.link,
             image: user.image,
             ...user,
           },
@@ -233,7 +233,7 @@ const Notification = () => {
             <Column field="key" header="Key" sortable></Column>
             <Column field="name" header="Nama"></Column>
             <Column field="content" header="Pesan" expander></Column>
-            <Column field="time" header="Waktu"></Column>
+            <Column field="link" header="Link"></Column>
             <Column field="image" header="Gambar"></Column>
             <Column
               body={actionTemplate}
@@ -258,12 +258,12 @@ const Notification = () => {
               />
             </div>
             <div className="p-field p-col-12 p-md-6">
-              <label htmlFor="time">Waktu</label>
+              <label htmlFor="link">Link</label>
               <InputText
-                id="time"
+                id="link"
                 type="text"
-                value={notificationTime}
-                onChange={(e) => setNotificationTime(e.target.value)}
+                value={notificationLink}
+                onChange={(e) => setNotificationLink(e.target.value)}
               />
             </div>
             <div className="p-field p-col-12">
