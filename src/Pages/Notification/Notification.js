@@ -340,7 +340,7 @@ const Notification = () => {
         />
         <img
           src="https://raw.githubusercontent.com/rahmatagungj/ruangmu-mobile-api/master/assets/user.png"
-          alt="Rahmat Agung Julians"
+          alt="Rahmat Agung Julians "
           style={{ width: "100px", borderRadius: "100PX" }}
           className="p-m-3"
         />
