@@ -74,17 +74,20 @@ const Notification = () => {
   };
 
   const sendNotification = async () => {
-    const splitedData = chunkArray(tokenArray, 2);
+    const splitedData = chunkArray(tokenArray, 100);
     for (let i = 0; i < splitedData.length; i++) {
-      const response = await fetch("https://exp.host/--/api/v2/push/send", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Accept-encoding": "gzip, deflate",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(splitedData[i]),
-      });
+      const response = await fetch(
+        "https://cors-anywhere.herokuapp.com/https://exp.host/--/api/v2/push/send",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Accept-encoding": "gzip, deflate",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(splitedData[i]),
+        }
+      );
       if (response.status === 200) {
         showSuccess(splitedData[i].length);
       } else {
