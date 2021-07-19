@@ -21,7 +21,7 @@ const Dashboard = () => {
 
   const getAllUser = async () => {
     const userDocRef = await firebase.firestore().collection("users");
-    const nowDate = new Date().getMonth();
+    const nowDate = new Date().getDate();
     userDocRef.get().then((querySnapshot) => {
       const tempDoc = querySnapshot.docs.map((doc) => {
         return { notificationToken: doc.notificationToken, ...doc.data() };
@@ -33,7 +33,7 @@ const Dashboard = () => {
             lastUsed: token.lastUsed,
           });
         }
-        if (token.notificationToken && token.lastUsed === nowDate) {
+        if (token.notificationToken && nowDate - token.lastUsed < 7) {
           userActiveArray.push({
             token: token.notificationToken,
             lastUsed: token.lastUsed,

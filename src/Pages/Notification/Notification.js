@@ -50,10 +50,9 @@ const Notification = () => {
     });
   };
 
-  const isActive = (month) => {
-    const currentMonth = new Date().getMonth();
-    const userMonth = month;
-    if (currentMonth === userMonth) {
+  const isActive = (userDate) => {
+    const currentDate = new Date().getDate();
+    if (currentDate - userDate < 7) {
       return true;
     } else {
       return false;
