@@ -223,18 +223,54 @@ const Notification = () => {
     );
   };
 
+  const imageTemplate = (node, column) => {
+    return (
+      <div>
+        <img
+          className="p-mx-auto"
+          src={node.data.image}
+          alt="notification image"
+          style={{ maxWidth: "80px" }}
+        />
+      </div>
+    );
+  };
+  const linkTemplate = (node, column) => {
+    return (
+      <div>
+        <a
+          href={node.data.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ maxWidth: "80px", wordWrap: "break-word" }}
+        >
+          {node.data.link}
+        </a>
+      </div>
+    );
+  };
+
   return (
     <div>
       <Toast ref={toast} position="bottom-right" />
       <MenuBar />
-      <Panel header="Notifikasi App" className="p-m-3">
+      <Panel header="Daftar Notifikasi" className="p-m-3">
         {isLoaded ? (
           <TreeTable value={nodes} paginator scrollable rows={100}>
             <Column field="key" header="Key" sortable></Column>
-            <Column field="name" header="Nama"></Column>
-            <Column field="content" header="Pesan" expander></Column>
-            <Column field="link" header="Link"></Column>
-            <Column field="image" header="Gambar"></Column>
+            <Column
+              field="name"
+              header="Nama"
+              style={{ wordWrap: "break-word" }}
+            ></Column>
+            <Column
+              field="content"
+              header="Pesan"
+              expander
+              style={{ wordWrap: "break-word" }}
+            ></Column>
+            <Column header="Link" body={linkTemplate}></Column>
+            <Column header="Gambar" body={imageTemplate}></Column>
             <Column
               body={actionTemplate}
               header="Aksi"
@@ -245,7 +281,7 @@ const Notification = () => {
           <h3>Data tidak ada.</h3>
         )}
       </Panel>
-      <Panel header="Notifikasi Pengguna" className="p-m-3">
+      <Panel header="Buat Notifikasi" className="p-m-3">
         {isLoaded ? (
           <div className="p-fluid p-formgrid p-grid">
             <div className="p-field p-col-12 p-md-6">
