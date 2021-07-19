@@ -28,6 +28,15 @@ const Notification = () => {
     });
   };
 
+  const showFailed = (user) => {
+    toast.current.show({
+      severity: "error",
+      summary: `Gagal`,
+      detail: `Notifikasi gagal dikirim kepada ${user} pengguna.`,
+      life: 3000,
+    });
+  };
+
   const isActive = (month) => {
     const currentMonth = new Date().getMonth();
     const userMonth = month;
@@ -38,7 +47,12 @@ const Notification = () => {
     }
   };
 
-  const makeNotification = () => {
+  const chunkArray = (arr, size) =>
+    arr.length > size
+      ? [arr.slice(0, size), ...chunkArray(arr.slice(size), size)]
+      : [arr];
+
+  const accept = () => {
     if (userData) {
       userData.map((token) => {
         if (token.token && isActive(token.lastUsed)) {
@@ -55,30 +69,31 @@ const Notification = () => {
     }
   };
 
+  const reject = () => {
+    tokenArray = [];
+  };
+
   const sendNotification = async () => {
-    await fetch("https://exp.host/--/api/v2/push/send", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Accept-encoding": "gzip, deflate",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(tokenArray),
-    })
-      .then((e) => {
-        if (e.ok) {
-          showSuccess(tokenArray.length);
-          tokenArray = [];
-          setIsSend(false);
-        } else {
-          setIsSend(false);
-        }
-      })
-      .catch((e) => {
-        tokenArray = [];
-        setIsSend(false);
-        console.log(e);
+    const splitedData = chunkArray(tokenArray, 2);
+    for (let i = 0; i < splitedData.length; i++) {
+      const response = await fetch("https://exp.host/--/api/v2/push/send", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Accept-encoding": "gzip, deflate",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(splitedData[i]),
       });
+      if (response.status === 200) {
+        showSuccess(splitedData[i].length);
+      } else {
+        showFailed(splitedData[i].length);
+        console.log("gagal", response);
+      }
+    }
+    tokenArray = [];
+    setIsSend(false);
   };
 
   useEffect(() => {
@@ -86,14 +101,6 @@ const Notification = () => {
       setCanSend(false);
     }
   }, [userData, isSend, notificationMessage, notificationTitle]);
-
-  const accept = () => {
-    makeNotification();
-  };
-
-  const reject = () => {
-    console.log("gagal");
-  };
 
   const confirmSendNotification = () => {
     confirmDialog({

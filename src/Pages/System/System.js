@@ -6,6 +6,8 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { firebase } from "../../Firebase/Firebase";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
+import { ToggleButton } from "primereact/togglebutton";
+import { Card } from "primereact/card";
 
 const System = () => {
   const [appData] = useContext(AppDataContext);
@@ -44,6 +46,15 @@ const System = () => {
     });
   };
 
+  const showSuccessUpdate = () => {
+    toast.current.show({
+      severity: "success",
+      summary: `Berhasil`,
+      detail: `Data berhasil diperbarui.`,
+      life: 3000,
+    });
+  };
+
   const updateBanner = async () => {
     if (appData && bannerRef.current.value.length > 0) {
       setIsSend(true);
@@ -59,6 +70,37 @@ const System = () => {
     }
   };
 
+  const updateMaintenance = async (value) => {
+    if (appData) {
+      setMaintenance(value);
+      setIsSend(true);
+      await firebase
+        .firestore()
+        .collection("applications")
+        .doc("maintenances")
+        .set({ maintenance: value }, { merge: true })
+        .then((e) => {
+          setIsSend(false);
+          showSuccessUpdate();
+        });
+    }
+  };
+
+  const updateDevmode = async (value) => {
+    if (appData) {
+      setDevmode(value);
+      setIsSend(true);
+      await firebase
+        .firestore()
+        .collection("applications")
+        .doc("devmodes")
+        .set({ devmode: value }, { merge: true })
+        .then((e) => {
+          setIsSend(false);
+          showSuccessUpdate();
+        });
+    }
+  };
   const RenderEditListBanner = () => {
     return (
       <div className="p-fluid p-formgrid p-grid">
@@ -82,12 +124,45 @@ const System = () => {
       </div>
     );
   };
+
   const RenderGeneral = () => {
     return (
-      <>
-        <h4>Maintenance : {maintenance ? "Ya" : "Tidak"}</h4>
-        <h4>Developer Mode : {devmode ? "Ya" : "Tidak"}</h4>
-      </>
+      <div className="p-formgroup-inline p-mt-3">
+        <div className="p-field">
+          <Card title="Maintenance">
+            <label htmlFor="Maintenance" className="p-sr-only">
+              Maintenance
+            </label>
+            <ToggleButton
+              id="Maintenance"
+              checked={maintenance}
+              onChange={(e) => updateMaintenance(e.value)}
+              onIcon="pi pi-check"
+              offIcon="pi pi-times"
+              onLabel="Aktif"
+              offLabel="Tidak Aktif"
+              disabled={isSend}
+            />
+          </Card>
+        </div>
+        <div className="p-field">
+          <Card title="Developer Mode">
+            <label htmlFor="Devmode" className="p-sr-only">
+              Developer Mode
+            </label>
+            <ToggleButton
+              id="Devmode"
+              checked={devmode}
+              onChange={(e) => updateDevmode(e.value)}
+              onIcon="pi pi-check"
+              offIcon="pi pi-times"
+              onLabel="Aktif"
+              offLabel="Tidak Aktif"
+              disabled={isSend}
+            />
+          </Card>
+        </div>
+      </div>
     );
   };
   return (
