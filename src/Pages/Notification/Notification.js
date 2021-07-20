@@ -11,8 +11,8 @@ import NotificationContext from "../../Contexts/NotificationContext";
 import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";
 import { firebase } from "../../Firebase/Firebase";
+import { Dropdown } from "primereact/dropdown";
 
-import { MultiSelect } from "primereact/multiselect";
 const Notification = () => {
   const [notificationTitle, setNotificationTitle] = useState(null);
   const [notificationMessage, setNotificationMessage] = useState(null);
@@ -30,6 +30,7 @@ const Notification = () => {
     useContext(NotificationContext);
   const [nodes, setNodes] = useState(notificationData);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [limitDate, setLimitDate] = useState(7);
 
   let tokenArray = [];
 
@@ -51,9 +52,21 @@ const Notification = () => {
     });
   };
 
+  const limitedDate = [
+    { name: "10", code: 10 },
+    { name: "15", code: 15 },
+    { name: "20", code: 20 },
+    { name: "25", code: 25 },
+    { name: "30", code: 30 },
+  ];
+
+  const onChangeLimitedDate = (e) => {
+    setLimitDate(e.target.value.code);
+  };
+
   const isActive = (userDate) => {
     const currentDate = new Date().getDate();
-    if (currentDate - userDate < 7) {
+    if (currentDate - userDate < limitDate) {
       return true;
     } else {
       return false;
@@ -90,6 +103,7 @@ const Notification = () => {
         },
       });
       setNewNodesData(nodes);
+      sendNotification();
     }
   };
 
@@ -130,7 +144,6 @@ const Notification = () => {
         return tokenArray;
       });
       handleAddNotif(notificationKey);
-      sendNotification();
     }
   };
 
@@ -306,7 +319,7 @@ const Notification = () => {
                 disabled={isSend}
               />
             </div>
-            <div className="p-field p-col-12 p-md-6">
+            <div className="p-field p-col-12 p-md-3">
               <label htmlFor="image">Gambar</label>
               <InputText
                 id="image"
@@ -322,6 +335,16 @@ const Notification = () => {
                 type="text"
                 value={notificationKey || ""}
                 onChange={(e) => setNotificationKey(e.target.value)}
+              />
+            </div>
+            <div className="p-field p-col-12 p-md-3">
+              <label htmlFor="limitdate">Limit Tanggal Penerima</label>
+              <Dropdown
+                value={limitDate}
+                options={limitedDate}
+                onChange={onChangeLimitedDate}
+                optionLabel="name"
+                placeholder={limitDate}
               />
             </div>
             <div className="p-field p-col-12 p-md-3">

@@ -61,6 +61,21 @@ const Users = () => {
     );
   };
 
+  const lastUsedTemplate = (node) => {
+    const lastUsed = node.data.lastUsed;
+    const nowDate = new Date();
+    const fontWeight = nowDate.getDate() - lastUsed < 7 ? "bold" : "normal";
+    const fontColor = nowDate.getDate() - lastUsed < 7 ? "green" : "red";
+
+    return (
+      <span style={{ fontWeight: fontWeight, color: fontColor }}>
+        {nowDate.getDate() - lastUsed < 7
+          ? "Aktif"
+          : nowDate.getDate() - lastUsed + " Hari yang lalu"}
+      </span>
+    );
+  };
+
   return (
     <div>
       <MenuBar />
@@ -70,7 +85,8 @@ const Users = () => {
             <Column field="token" header="Token" expander></Column>
             <Column
               field="lastUsed"
-              header="Terkahir Digunakan"
+              header="Status"
+              body={lastUsedTemplate}
               sortable
               style={{ textAlign: "center", width: "8em" }}
             ></Column>

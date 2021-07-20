@@ -7,6 +7,8 @@ import { ProgressSpinner } from "primereact/progressspinner";
 import AppDataContext from "../../Contexts/AppDataContext";
 import UserActiveDataContext from "../../Contexts/UserActiveDataContext";
 import NotificationContext from "../../Contexts/NotificationContext";
+import Terminals from "../../Components/Terminals";
+import { Panel } from "primereact/panel";
 
 const Dashboard = () => {
   const [userData, setUserData] = useContext(UserDataContext);
@@ -102,6 +104,18 @@ const Dashboard = () => {
               className="p-col p-mx-3 p-mt-5"
             ></Card>
           )}
+          {notificationData && (
+            <Card
+              title={notificationData.length}
+              subTitle="Notifikasi"
+              className="p-col p-mx-3 p-mt-5"
+            ></Card>
+          )}
+        </div>
+        <div className="p-mt-4">
+          <Panel header="Terminal" className="no-border p-m-2">
+            <Terminals />
+          </Panel>
         </div>
       </div>
     </div>
