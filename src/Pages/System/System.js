@@ -19,14 +19,6 @@ const System = () => {
   const [isSend, setIsSend] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  useEffect(() => {
-    if (appData) {
-      setBanners(appData[0]["banner"]);
-      setMaintenance(appData[2]["maintenance"]);
-      setDevmode(appData[1]["devmode"]);
-    }
-  }, [appData]);
-
   const RenderListBanner = () => {
     return banners.map((banner, idx) => (
       <img
@@ -57,7 +49,7 @@ const System = () => {
   };
 
   const updateBanner = async () => {
-    if (appData && bannerRef.current.value.length > 0) {
+    if (appData && bannerRef.current.value.replace(/\s/g, "").length > 0) {
       setIsSend(true);
       await firebase
         .firestore()
@@ -65,15 +57,14 @@ const System = () => {
         .doc("banners")
         .set({ banner: bannerRef.current.value.split(",") }, { merge: true })
         .then((e) => {
-          setIsSend(false);
           showSuccess();
+          setIsSend(false);
         });
     }
   };
 
   const updateMaintenance = async (value) => {
     if (appData) {
-      setMaintenance(value);
       setIsSend(true);
       await firebase
         .firestore()
@@ -81,15 +72,15 @@ const System = () => {
         .doc("maintenances")
         .set({ maintenance: value }, { merge: true })
         .then((e) => {
-          setIsSend(false);
+          setMaintenance(value);
           showSuccessUpdate();
+          setIsSend(false);
         });
     }
   };
 
   const updateDevmode = async (value) => {
     if (appData) {
-      setDevmode(value);
       setIsSend(true);
       await firebase
         .firestore()
@@ -97,8 +88,9 @@ const System = () => {
         .doc("devmodes")
         .set({ devmode: value }, { merge: true })
         .then((e) => {
-          setIsSend(false);
+          setDevmode(value);
           showSuccessUpdate();
+          setIsSend(false);
         });
     }
   };
@@ -106,7 +98,6 @@ const System = () => {
   const RenderEditListBanner = () => {
     return (
       <div className="p-fluid p-formgrid p-grid">
-        <Toast ref={toast} position="bottom-right" />
         <div className="p-field p-col-12">
           <div className="p-field p-fluid p-mt-3">
             <label htmlFor="bannerOld">Data Banner Lama</label>
@@ -143,7 +134,7 @@ const System = () => {
               offIcon="pi pi-times"
               onLabel="Aktif"
               offLabel="Tidak Aktif"
-              disabled={isSend}
+              disabled={isSend ? 1 : 0}
             />
           </Card>
         </div>
@@ -160,7 +151,7 @@ const System = () => {
               offIcon="pi pi-times"
               onLabel="Aktif"
               offLabel="Tidak Aktif"
-              disabled={isSend}
+              disabled={isSend ? 1 : 0}
             />
           </Card>
         </div>
@@ -169,23 +160,31 @@ const System = () => {
   };
 
   useEffect(() => {
-    if (appData && banners) {
+    if (appData) {
+      setBanners(appData[0]["banner"]);
+      setMaintenance(appData[2]["maintenance"]);
+      setDevmode(appData[1]["devmode"]);
       setIsLoaded(true);
     }
     return () => {
       setIsLoaded(false);
     };
-  }, [appData, banners]);
+  }, [appData]);
 
   return (
     <div>
       <MenuBar />
+      <Toast ref={toast} position="bottom-right" />
       <Panel header="Banner" className="p-m-3">
         {isLoaded ? (
           <>
             <RenderListBanner /> <br />
             <RenderEditListBanner />
-            <Button onClick={updateBanner} label="Perbarui" disabled={isSend} />
+            <Button
+              onClick={() => updateBanner()}
+              label="Perbarui"
+              disabled={isSend ? 1 : 0}
+            />
           </>
         ) : (
           <h3>Data tidak ada.</h3>

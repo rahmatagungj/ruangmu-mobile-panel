@@ -14,13 +14,12 @@ import { firebase } from "../../Firebase/Firebase";
 import { Dropdown } from "primereact/dropdown";
 
 const Notification = () => {
-  const [notificationTitle, setNotificationTitle] = useState(null);
-  const [notificationMessage, setNotificationMessage] = useState(null);
-  const [notificationShortMessage, setNotificationShortMessage] =
-    useState(null);
-  const [notificationLink, setNotificationLink] = useState(null);
-  const [notificationImage, setNotificationImage] = useState(null);
-  const [notificationKey, setNotificationKey] = useState(null);
+  const [notificationTitle, setNotificationTitle] = useState("");
+  const [notificationMessage, setNotificationMessage] = useState("");
+  const [notificationShortMessage, setNotificationShortMessage] = useState("");
+  const [notificationLink, setNotificationLink] = useState("");
+  const [notificationImage, setNotificationImage] = useState("");
+  const [notificationKey, setNotificationKey] = useState("");
   const [newNodesData, setNewNodesData] = useState(null);
   const [isSend, setIsSend] = useState(false);
   const [userData] = useContext(UserDataContext);
@@ -177,10 +176,29 @@ const Notification = () => {
   };
 
   useEffect(() => {
-    if (userData && notificationMessage && notificationTitle) {
+    if (
+      userData &&
+      notificationMessage.replace(/\s/g, "").length > 0 &&
+      notificationTitle.replace(/\s/g, "").length > 0 &&
+      notificationImage.replace(/\s/g, "").length > 0 &&
+      notificationKey.replace(/\s/g, "").length > 0 &&
+      notificationLink.replace(/\s/g, "").length > 0 &&
+      notificationShortMessage.replace(/\s/g, "").length > 0
+    ) {
       setCanSend(false);
+    } else {
+      setCanSend(true);
     }
-  }, [userData, isSend, notificationMessage, notificationTitle]);
+  }, [
+    userData,
+    isSend,
+    notificationMessage,
+    notificationTitle,
+    notificationImage,
+    notificationKey,
+    notificationLink,
+    notificationShortMessage,
+  ]);
 
   const confirmSendNotification = () => {
     confirmDialog({
