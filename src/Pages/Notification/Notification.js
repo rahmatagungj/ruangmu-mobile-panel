@@ -53,11 +53,11 @@ const Notification = () => {
   };
 
   const limitedDate = [
-    { name: "10", code: 10 },
-    { name: "15", code: 15 },
-    { name: "20", code: 20 },
-    { name: "25", code: 25 },
-    { name: "30", code: 30 },
+    { name: "10 Hari", code: 10 },
+    { name: "15 Hari", code: 15 },
+    { name: "20 Hari", code: 20 },
+    { name: "25 Hari", code: 25 },
+    { name: "30 Hari", code: 30 },
   ];
 
   const onChangeLimitedDate = (e) => {
@@ -239,7 +239,7 @@ const Notification = () => {
           className="p-mx-auto"
           src={node.data.image}
           alt="notification image"
-          style={{ maxWidth: "80px" }}
+          style={{ maxWidth: "80px", borderRadius: "100px" }}
         />
       </div>
     );
@@ -338,13 +338,13 @@ const Notification = () => {
               />
             </div>
             <div className="p-field p-col-12 p-md-3">
-              <label htmlFor="limitdate">Limit Tanggal Penerima</label>
+              <label htmlFor="limitdate">Tenggat Aktif Pengguna</label>
               <Dropdown
                 value={limitDate}
                 options={limitedDate}
                 onChange={onChangeLimitedDate}
                 optionLabel="name"
-                placeholder={limitDate}
+                placeholder={limitDate + " Hari"}
               />
             </div>
             <div className="p-field p-col-12 p-md-3">
