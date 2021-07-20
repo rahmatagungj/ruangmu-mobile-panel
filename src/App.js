@@ -5,7 +5,7 @@ import PrivateRoute from "./PrivateRoute";
 import Login from "./Pages/Login/Login";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import Users from "./Pages/Users/Users";
-import "primereact/resources/themes/rhea/theme.css";
+import "primereact/resources/themes/fluent-light/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import PrimeReact from "primereact/api";

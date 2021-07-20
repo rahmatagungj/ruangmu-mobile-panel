@@ -77,7 +77,9 @@ const Dashboard = () => {
     } else {
       setIsLoaded(true);
     }
-    // eslint-disable-next-line
+    return () => {
+      setIsLoaded(true);
+    };
   }, [setIsLoaded, userData]);
 
   return (

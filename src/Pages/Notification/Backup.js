@@ -12,7 +12,6 @@ import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";
 import { firebase } from "../../Firebase/Firebase";
 
-import { MultiSelect } from "primereact/multiselect";
 const Notification = () => {
   const [notificationTitle, setNotificationTitle] = useState(null);
   const [notificationMessage, setNotificationMessage] = useState(null);
@@ -97,6 +96,7 @@ const Notification = () => {
     const filteredNodes = nodes.filter((node) => node.data.key !== key);
     const newFilteredNodes = [...filteredNodes];
     setNodes(newFilteredNodes);
+    console.log(newFilteredNodes);
   };
 
   const handleDeleteNotif = async (key) => {
@@ -187,7 +187,7 @@ const Notification = () => {
     if (notificationData) {
       const dataNotificationMap = notificationData.map((user, idx) => {
         return {
-          key: idx || user.key,
+          key: idx + "" + user.key,
           data: {
             key: user.key,
             name: user.name,
@@ -219,7 +219,7 @@ const Notification = () => {
     );
   };
 
-  const imageTemplate = (node) => {
+  const imageTemplate = (node, column) => {
     return (
       <div>
         <img
@@ -231,11 +231,15 @@ const Notification = () => {
       </div>
     );
   };
-
-  const linkTemplate = (node) => {
+  const linkTemplate = (node, column) => {
     return (
       <div>
-        <a href={node.data.link} target="_blank" rel="noopener noreferrer">
+        <a
+          href={node.data.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ maxWidth: "80px", wordWrap: "break-word" }}
+        >
           {node.data.link}
         </a>
       </div>
@@ -248,14 +252,20 @@ const Notification = () => {
       <MenuBar />
       <Panel header="Daftar Notifikasi" className="p-m-3">
         {isLoaded ? (
-          <TreeTable value={nodes} paginator scrollable rows={100}>
+          <TreeTable
+            value={nodes}
+            paginator
+            scrollable
+            rows={100}
+            scrollable
+            scrollHeight="200px"
+          >
             <Column field="key" header="Key" sortable></Column>
             <Column field="name" header="Nama"></Column>
             <Column field="content" header="Pesan" expander></Column>
             <Column header="Link" body={linkTemplate}></Column>
-            <Column field="image" header="Gambar" body={imageTemplate}></Column>
+            <Column header="Gambar" body={imageTemplate}></Column>
             <Column
-              field=""
               body={actionTemplate}
               header="Aksi"
               style={{ textAlign: "center", width: "8em" }}
@@ -272,7 +282,7 @@ const Notification = () => {
               <label htmlFor="title">Pengirim</label>
               <InputText
                 id="title"
-                value={notificationTitle || ""}
+                value={notificationTitle}
                 onChange={(e) => setNotificationTitle(e.target.value)}
                 disabled={isSend}
               />
@@ -282,7 +292,7 @@ const Notification = () => {
               <InputText
                 id="link"
                 type="text"
-                value={notificationLink || ""}
+                value={notificationLink}
                 onChange={(e) => setNotificationLink(e.target.value)}
               />
             </div>
@@ -291,7 +301,7 @@ const Notification = () => {
               <InputTextarea
                 rows="2"
                 id="shortmessage"
-                value={notificationShortMessage || ""}
+                value={notificationShortMessage}
                 onChange={(e) => setNotificationShortMessage(e.target.value)}
                 disabled={isSend}
               />
@@ -301,7 +311,7 @@ const Notification = () => {
               <InputTextarea
                 rows="4"
                 id="message"
-                value={notificationMessage || ""}
+                value={notificationMessage}
                 onChange={(e) => setNotificationMessage(e.target.value)}
                 disabled={isSend}
               />
@@ -311,7 +321,7 @@ const Notification = () => {
               <InputText
                 id="image"
                 type="text"
-                value={notificationImage || ""}
+                value={notificationImage}
                 onChange={(e) => setNotificationImage(e.target.value)}
               />
             </div>
@@ -320,7 +330,7 @@ const Notification = () => {
               <InputText
                 id="key"
                 type="text"
-                value={notificationKey || ""}
+                value={notificationKey}
                 onChange={(e) => setNotificationKey(e.target.value)}
               />
             </div>
