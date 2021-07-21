@@ -9,6 +9,7 @@ import UserActiveDataContext from "../../Contexts/UserActiveDataContext";
 import NotificationContext from "../../Contexts/NotificationContext";
 import Terminals from "../../Components/Terminals";
 import { Panel } from "primereact/panel";
+import { Chart } from "primereact/chart";
 
 const Dashboard = () => {
   const [userData, setUserData] = useContext(UserDataContext);
@@ -84,38 +85,66 @@ const Dashboard = () => {
     };
   }, [setIsLoaded, userData]);
 
+  const chartData = {
+    labels: ["Tidak Aktif", "Aktif"],
+    datasets: [
+      {
+        data: [
+          userData ? userData.length : 0,
+          userActiveData ? userActiveData.length : 0,
+        ],
+        backgroundColor: ["#f81f3c", "#66BB6A"],
+        hoverBackgroundColor: ["#f81f3c", "#81C784"],
+      },
+    ],
+  };
+
+  const RenderLoading = () => {
+    return (
+      <i className="pi pi-spin pi-spinner" style={{ fontSize: "1em" }}></i>
+    );
+  };
+
   return (
     <div>
       <MenuBar />
-      <div className="p-m-3">
+      <div className="p-grid">
+        <Card
+          title={userData ? userData.length : <RenderLoading />}
+          subTitle="Pengguna"
+          className="p-col p-mx-3 p-mt-5"
+        ></Card>
+        <Card
+          title={userActiveData ? userActiveData.length : <RenderLoading />}
+          subTitle="Pengguna Aktif"
+          className="p-col p-mx-3 p-mt-5"
+        ></Card>
+        <Card
+          title={notificationData ? notificationData.length : <RenderLoading />}
+          subTitle="Notifikasi"
+          className="p-col p-mx-3 p-mt-5"
+        ></Card>
+      </div>
+      <div className="p-m-2">
         <div className="p-grid">
-          {!isLoaded && <ProgressSpinner className="p-mx-auto p-mt-4" />}
-          {userData && (
-            <Card
-              title={userData.length}
-              subTitle="Pengguna"
-              className="p-col p-mx-3 p-mt-5"
-            ></Card>
-          )}
-          {userActiveData && (
-            <Card
-              title={userActiveData.length}
-              subTitle="Pengguna Aktif"
-              className="p-col p-mx-3 p-mt-5"
-            ></Card>
-          )}
-          {notificationData && (
-            <Card
-              title={notificationData.length}
-              subTitle="Notifikasi"
-              className="p-col p-mx-3 p-mt-5"
-            ></Card>
-          )}
-        </div>
-        <div className="p-mt-4">
-          <Panel header="Terminal" className="no-border p-m-2">
-            <Terminals />
-          </Panel>
+          <div className="p-col-3 p-mt-2">
+            <Panel header="Statistik Pengguna" className="no-border">
+              <Chart
+                type="doughnut"
+                data={chartData}
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  paddingBottom: "10px",
+                }}
+              />
+            </Panel>
+          </div>
+          <div className="p-col p-mt-2">
+            <Panel header="Terminal" className="no-border">
+              <Terminals />
+            </Panel>
+          </div>
         </div>
       </div>
     </div>
