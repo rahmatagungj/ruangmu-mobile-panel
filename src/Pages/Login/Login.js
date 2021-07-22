@@ -6,14 +6,17 @@ import { Card } from "primereact/card";
 import "./Login.css";
 import { Button } from "primereact/button";
 import Seo from "../../Components/Seo";
+import { Password } from "primereact/password";
+import { Captcha } from "primereact/captcha";
 
 const Login = () => {
   const emailRef = useRef();
-  const passwordRef = useRef();
+  const [password, setPassword] = useState("");
   const { currentUser, login } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useHistory();
+  const [disableLogin, setDisableLogin] = useState(true);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -21,9 +24,9 @@ const Login = () => {
     try {
       setError("");
       setLoading(true);
-      await login(emailRef.current.value, passwordRef.current.value);
+      await login(emailRef.current.value, password);
       history.push("/dashboard");
-    } catch {
+    } catch (e) {
       setError("Login gagal");
     }
 
@@ -33,6 +36,16 @@ const Login = () => {
   if (currentUser) {
     return <Redirect to="/dashboard" />;
   }
+
+  const showResponseCaptcha = (response) => {
+    setDisableLogin(false);
+  };
+
+  const RenderLoading = () => {
+    return (
+      <i className="pi pi-spin pi-spinner" style={{ fontSize: "1em" }}></i>
+    );
+  };
 
   return (
     <div>
@@ -51,17 +64,26 @@ const Login = () => {
               </div>
               <div className="p-field">
                 <label htmlFor="password">Kata Sandi</label>
-                <InputText
+                <Password
                   type="text"
                   name="password"
                   id="pasword"
-                  ref={passwordRef}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  feedback={false}
+                  toggleMask
                 />
               </div>
               <div className="p-field">
+                <Captcha
+                  siteKey="6LcuirEbAAAAABy0oKaVFq0O5C4ZY020VY5cqf7Q"
+                  onResponse={showResponseCaptcha}
+                ></Captcha>
+              </div>
+              <div className="p-field">
                 <Button
-                  label="Masuk"
-                  disabled={loading}
+                  label={loading ? <RenderLoading /> : "Masuk"}
+                  disabled={disableLogin ? disableLogin : loading}
                   className="bg-dark-blue"
                 />
               </div>
