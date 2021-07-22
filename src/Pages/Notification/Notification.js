@@ -129,7 +129,7 @@ const Notification = () => {
       setNodes(null);
       setNewNodesData(null);
     };
-  }, [newNodesData]);
+  }, [newNodesData, nodes]);
 
   const accept = () => {
     if (userData) {
@@ -258,7 +258,7 @@ const Notification = () => {
         <img
           className="p-mx-auto"
           src={node.data.image}
-          alt="notification image"
+          alt="notifications"
           style={{ maxWidth: "80px", borderRadius: "100px" }}
         />
       </div>
