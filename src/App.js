@@ -18,6 +18,7 @@ import AppDataContext from "./Contexts/AppDataContext";
 import UserActiveDataContext from "./Contexts/UserActiveDataContext";
 import React from "react";
 import NotificationContext from "./Contexts/NotificationContext";
+import Seo from "./Components/Seo";
 
 PrimeReact.ripple = true;
 
@@ -62,6 +63,7 @@ function App() {
                   />
                   <Route path="/login" exact component={Login} />
                   <Route path="/" exact>
+                    <Seo title="Ruangmu Mobile" />
                     <h1>Hai</h1>
                   </Route>
                 </Switch>

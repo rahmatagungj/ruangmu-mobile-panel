@@ -5,6 +5,7 @@ import { InputText } from "primereact/inputtext";
 import { Card } from "primereact/card";
 import "./Login.css";
 import { Button } from "primereact/button";
+import Seo from "../../Components/Seo";
 
 const Login = () => {
   const emailRef = useRef();
@@ -35,6 +36,7 @@ const Login = () => {
 
   return (
     <div>
+      <Seo title="Ruangmu Mobile - Masuk" />
       <div className="p-d-flex p-jc-center">
         <Card
           title="Masuk"

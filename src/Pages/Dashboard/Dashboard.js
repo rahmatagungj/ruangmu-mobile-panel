@@ -10,6 +10,7 @@ import NotificationContext from "../../Contexts/NotificationContext";
 import Terminals from "../../Components/Terminals";
 import { Panel } from "primereact/panel";
 import { Chart } from "primereact/chart";
+import Seo from "../../Components/Seo";
 
 const Dashboard = () => {
   const [userData, setUserData] = useContext(UserDataContext);
@@ -107,6 +108,7 @@ const Dashboard = () => {
 
   return (
     <div>
+      <Seo title="Ruangmu Mobile - Beranda" />
       <MenuBar />
       <div className="p-grid">
         <Card

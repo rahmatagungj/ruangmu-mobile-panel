@@ -12,6 +12,7 @@ import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";
 import { firebase } from "../../Firebase/Firebase";
 import { Dropdown } from "primereact/dropdown";
+import Seo from "../../Components/Seo";
 
 const Notification = () => {
   const [notificationTitle, setNotificationTitle] = useState("");
@@ -154,7 +155,7 @@ const Notification = () => {
     const splitedData = chunkArray(tokenArray, 100);
     for (let i = 0; i < splitedData.length; i++) {
       const response = await fetch(
-        "https://cors-anywhere.herokuapp.com/https://exp.host/--/api/v2/push/send",
+        "https://ruangmu-mobile-proxy.herokuapp.com/https://exp.host/--/api/v2/push/send",
         {
           method: "POST",
           headers: {
@@ -275,6 +276,7 @@ const Notification = () => {
 
   return (
     <div>
+      <Seo title="Ruangmu Mobile - Notifikasi" />
       <Toast ref={toast} position="bottom-right" />
       <MenuBar />
       <Panel header="Daftar Notifikasi" className="p-m-3">

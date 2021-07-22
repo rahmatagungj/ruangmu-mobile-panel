@@ -8,6 +8,7 @@ import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { ToggleButton } from "primereact/togglebutton";
 import { Card } from "primereact/card";
+import Seo from "../../Components/Seo";
 
 const System = () => {
   const [appData] = useContext(AppDataContext);
@@ -173,6 +174,7 @@ const System = () => {
 
   return (
     <div>
+      <Seo title="Ruangmu Mobile - Sistem" />
       <MenuBar />
       <Toast ref={toast} position="bottom-right" />
       <Panel header="Banner" className="p-m-3">

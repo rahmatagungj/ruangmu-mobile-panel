@@ -4,12 +4,14 @@ import { useAuth } from "../../Contexts/AuthContext";
 import { Panel } from "primereact/panel";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
+import Seo from "../../Components/Seo";
 
 const Profile = () => {
   const { currentUser } = useAuth();
 
   return (
     <div>
+      <Seo title="Ruangmu Mobile - Profil" />
       <MenuBar />
       <Panel header="Profil" className="p-m-3">
         <div className="p-fluid">

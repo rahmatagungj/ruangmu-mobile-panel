@@ -6,6 +6,7 @@ import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { Panel } from "primereact/panel";
 import UserDataContext from "../../Contexts/UserDataContext";
+import Seo from "../../Components/Seo";
 
 const Users = () => {
   const [userData, setUserData] = useContext(UserDataContext);
@@ -78,6 +79,7 @@ const Users = () => {
 
   return (
     <div>
+      <Seo title="Ruangmu Mobile - Pengguna" />
       <MenuBar />
       <Panel header="Data Pengguna" className="p-m-3">
         {isLoaded ? (
