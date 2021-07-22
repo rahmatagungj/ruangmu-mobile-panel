@@ -53,6 +53,7 @@ const Notification = () => {
   };
 
   const limitedDate = [
+    { name: "7 Hari", code: 7 },
     { name: "10 Hari", code: 10 },
     { name: "15 Hari", code: 15 },
     { name: "20 Hari", code: 20 },
