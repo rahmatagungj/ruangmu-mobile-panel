@@ -37,14 +37,12 @@ const Login = () => {
     return <Redirect to="/dashboard" />;
   }
 
-  const showResponseCaptcha = (response) => {
+  const showResponseCaptcha = () => {
     setDisableLogin(false);
   };
 
   const RenderLoading = () => {
-    return (
-      <i className="pi pi-spin pi-spinner" style={{ fontSize: "1em" }}></i>
-    );
+    return <i className="pi pi-spin pi-spinner" style={{ fontSize: "1em" }} />;
   };
 
   return (
@@ -78,7 +76,7 @@ const Login = () => {
                 <Captcha
                   siteKey="6LcuirEbAAAAABy0oKaVFq0O5C4ZY020VY5cqf7Q"
                   onResponse={showResponseCaptcha}
-                ></Captcha>
+                />
               </div>
               <div className="p-field">
                 <Button
